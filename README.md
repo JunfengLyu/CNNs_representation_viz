@@ -24,7 +24,7 @@
 
 ## 本地运行
 
-推荐使用 Python 3.10。
+推荐使用 Python 3.10 或更新版本。Streamlit Community Cloud 会使用它当前支持的 Python 版本，因此 `requirements.txt` 中的 PyTorch 版本使用了兼容范围，而不是固定旧版本。
 
 ```bash
 cd CNNs_representation_viz
@@ -72,6 +72,8 @@ git push -u origin main
 5. Branch 选择 `main`。
 6. Main file path 填写 `app.py`。
 7. 点击 Deploy。
+
+如果 Cloud 的安装日志显示某个依赖不支持当前 Python 版本，可以在部署页面的 **Advanced settings** 中把 Python version 改成 `3.12`，再重新部署。
 
 部署完成后，Streamlit 会生成一个公开网址。把这个网址发给学生即可。
 
