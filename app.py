@@ -31,7 +31,7 @@ DEMO_IMAGE = ROOT / "ImageNet_demo.JPEG"
 
 st.set_page_config(page_title="CNNs Representation Viz", layout="wide")
 st.title("CNNs Representation Viz")
-st.caption("通过 LeNet 手写数字和 AlexNet 自然图像，观察神经网络在不同层级中形成的表征。")
+st.caption("Explore how LeNet and AlexNet form representations across different network layers.")
 
 
 def get_device():
@@ -55,7 +55,7 @@ def load_lenet(device: str):
     return model
 
 
-@st.cache_resource(show_spinner="正在加载 AlexNet。首次运行会自动下载预训练权重，可能需要一点时间...")
+@st.cache_resource(show_spinner="Loading AlexNet. The first run may download pretrained weights...")
 def cached_alexnet(device: str):
     return load_alexnet(device)
 
@@ -86,15 +86,15 @@ def topk_text(logits: torch.Tensor, k: int = 5, labels=None):
     rows = []
     for v, i in zip(vals.tolist(), idxs.tolist()):
         name = str(i) if labels is None else labels[i]
-        rows.append({"类别": name, "概率": round(float(v), 4)})
+        rows.append({"class": name, "probability": round(float(v), 4)})
     return rows
 
 
 def lenet_mode(device: str):
-    st.header("模式一：手写数字 + LeNet")
-    st.write("请在黑色画布上用白色笔迹写一个数字，然后选择网络层和通道，观察模型如何逐层处理这个数字。")
+    st.header("Mode 1: Handwritten digit + LeNet")
+    st.write("Draw a white digit on the black canvas, then choose a layer and channel to inspect the model representation.")
     if st_canvas is None:
-        st.error("缺少 streamlit-drawable-canvas 依赖。请运行：pip install streamlit-drawable-canvas")
+        st.error("streamlit-drawable-canvas is missing. Run: pip install streamlit-drawable-canvas")
         return
 
     c1, c2 = st.columns([1, 1])
@@ -111,60 +111,60 @@ def lenet_mode(device: str):
         )
 
     if canvas_result.image_data is None:
-        st.info("写一个数字后即可开始。")
+        st.info("Draw a digit to begin.")
         return
 
     digit_img, x = preprocess_canvas_rgba(canvas_result.image_data)
     model = load_lenet(device)
     x = x.to(device)
 
-    layer_label = st.selectbox("选择 LeNet 层", list(LENET_LAYER_MAP.keys()), index=0)
+    layer_label = st.selectbox("Choose a LeNet layer", list(LENET_LAYER_MAP.keys()), index=0)
     module_name = LENET_LAYER_MAP[layer_label]
     logits, act = capture_activation(model, module_name, x)
     n_ch = available_channels(act)
-    channel = st.slider("通道 / 单元编号", 0, max(0, n_ch - 1), 0)
+    channel = st.slider("Channel / unit index", 0, max(0, n_ch - 1), 0)
     act2d, desc = activation_channel_image(act, channel)
 
     with c2:
-        st.image(digit_img.resize((140, 140), Image.Resampling.NEAREST), caption="模型看到的 28x28 输入", width=180)
+        st.image(digit_img.resize((140, 140), Image.Resampling.NEAREST), caption="28x28 model input", width=180)
         pred = int(torch.argmax(logits[0]).item())
-        st.metric("模型预测的数字", pred)
+        st.metric("Predicted digit", pred)
         st.dataframe(topk_text(logits, k=5, labels=[str(i) for i in range(10)]), hide_index=True, use_container_width=True)
 
-    st.subheader("当前选择的表征")
+    st.subheader("Selected representation")
     v1, v2 = st.columns([1, 1])
     with v1:
         plot_activation(act2d, f"{layer_label}\n{desc}")
     with v2:
         if act2d.ndim == 2 and min(act2d.shape) > 1:
-            plot_overlay(digit_img.convert("RGB"), act2d, "激活叠加到数字输入上")
+            plot_overlay(digit_img.convert("RGB"), act2d, "Activation overlay on digit input")
         else:
-            st.info("全连接层是向量，没有空间位置图；左侧热图展示的是整条激活向量。")
+            st.info("Fully connected layers are vectors, not spatial maps. The heatmap shows the full activation vector.")
 
-    st.caption(f"激活张量形状：{tuple(act.shape)}")
+    st.caption(f"Activation tensor shape: {tuple(act.shape)}")
 
 
 def alexnet_mode(device: str):
-    st.header("模式二：自然图像 + AlexNet")
-    st.write("可以直接使用示例图，也可以上传一张自己的图片，观察 AlexNet 对自然图像的逐层表征。")
-    uploaded = st.file_uploader("上传图片（可选）", type=["png", "jpg", "jpeg", "webp"])
+    st.header("Mode 2: Natural image + AlexNet")
+    st.write("Use the default image or upload your own image to inspect AlexNet representations.")
+    uploaded = st.file_uploader("Upload an image (optional)", type=["png", "jpg", "jpeg", "webp"])
 
     if uploaded is None:
         if not DEMO_IMAGE.exists():
-            st.info("请上传一张图片后开始。")
+            st.info("Upload an image to begin.")
             return
         img = Image.open(DEMO_IMAGE)
-        source_caption = "示例图片"
+        source_caption = "Demo image"
     else:
         img = Image.open(uploaded)
-        source_caption = "上传的图片"
+        source_caption = "Uploaded image"
 
     try:
         model, weights = cached_alexnet(device)
     except Exception as e:
-        st.error("AlexNet 加载失败。常见原因是首次下载预训练权重时网络中断。")
+        st.error("AlexNet failed to load. This often means the pretrained-weight download was interrupted.")
         st.code(str(e))
-        st.write("本地运行时可以删除 PyTorch 缓存后重试：")
+        st.write("For local runs, clear the PyTorch cache and retry:")
         st.code("rm -rf ~/.cache/torch/checkpoints/*\npython -m streamlit run app.py", language="bash")
         return
 
@@ -175,38 +175,38 @@ def alexnet_mode(device: str):
     with a:
         st.image(original, caption=source_caption, use_container_width=True)
     with b:
-        layer_label = st.selectbox("选择 AlexNet 层", list(ALEXNET_LAYER_MAP.keys()), index=0)
+        layer_label = st.selectbox("Choose an AlexNet layer", list(ALEXNET_LAYER_MAP.keys()), index=0)
         module_name = ALEXNET_LAYER_MAP[layer_label]
         logits, act = capture_activation(model, module_name, x)
         labels = weights.meta.get("categories")
-        st.write("模型预测结果")
+        st.write("Top predictions")
         st.dataframe(topk_text(logits, k=5, labels=labels), hide_index=True, use_container_width=True)
         n_ch = available_channels(act)
-        channel = st.slider("通道 / 单元编号", 0, max(0, n_ch - 1), 0)
+        channel = st.slider("Channel / unit index", 0, max(0, n_ch - 1), 0)
 
     act2d, desc = activation_channel_image(act, channel)
-    st.subheader("当前选择的表征")
+    st.subheader("Selected representation")
     v1, v2 = st.columns([1, 1])
     with v1:
         plot_activation(act2d, f"{layer_label}\n{desc}")
     with v2:
         if act2d.ndim == 2 and min(act2d.shape) > 1:
-            plot_overlay(original, act2d, "激活叠加到原图上")
+            plot_overlay(original, act2d, "Activation overlay on original image")
         else:
-            st.info("全连接层是向量。左侧热图展示的是整条向量，而不是类似图像的空间图。")
-    st.caption(f"激活张量形状：{tuple(act.shape)}")
+            st.info("Fully connected layers are vectors. The heatmap shows the full vector rather than an image-like spatial map.")
+    st.caption(f"Activation tensor shape: {tuple(act.shape)}")
 
 
 def main():
     device = get_device()
-    st.sidebar.success(f"运行设备：{device}")
-    st.sidebar.markdown("### 探索提示")
-    st.sidebar.write("早期卷积层常保留边缘、笔画和纹理；越深的层通常越抽象，也越接近分类任务。")
+    st.sidebar.success(f"Device: {device}")
+    st.sidebar.markdown("### Exploration prompt")
+    st.sidebar.write("Early convolution layers often preserve edges, strokes, and textures. Deeper layers become more abstract and class-oriented.")
     mode = st.sidebar.radio(
-        "选择模式",
-        ["手写数字 + LeNet", "自然图像 + AlexNet"],
+        "Choose a mode",
+        ["Handwritten digit + LeNet", "Natural image + AlexNet"],
     )
-    if mode == "手写数字 + LeNet":
+    if mode == "Handwritten digit + LeNet":
         lenet_mode(device)
     else:
         alexnet_mode(device)

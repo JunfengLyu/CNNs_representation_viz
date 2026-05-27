@@ -85,11 +85,11 @@ def activation_channel_image(act: torch.Tensor, channel: int) -> Tuple[np.ndarra
     a = act[0]
     if a.ndim == 3:
         c = int(np.clip(channel, 0, a.shape[0] - 1))
-        return a[c].numpy(), f"第 {c} 个通道的空间激活图，共 {a.shape[0]} 个通道"
+        return a[c].numpy(), f"Spatial activation map for channel {c} of {a.shape[0]}"
     if a.ndim == 1:
         c = int(np.clip(channel, 0, a.shape[0] - 1))
-        return a.numpy()[None, :], f"向量激活；第 {c} 个单元的数值 = {float(a[c]):.4f}"
-    return a.squeeze().numpy(), "激活"
+        return a.numpy()[None, :], f"Vector activation; unit {c} value = {float(a[c]):.4f}"
+    return a.squeeze().numpy(), "Activation"
 
 
 def available_channels(act: torch.Tensor) -> int:

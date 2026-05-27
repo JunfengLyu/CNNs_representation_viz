@@ -1,30 +1,30 @@
 # CNNs Representation Viz
 
-这是一个用于期末题自主探索的 Streamlit 在线应用。学生无需安装 Python 或配置深度学习环境，只需要打开网页，就可以观察 LeNet 和 AlexNet 在不同层级中的神经网络表征。
+This Streamlit app is designed for a final-term exploratory assignment. Students can open a website and inspect neural network representations without installing Python or configuring a deep learning environment.
 
-应用包含两个模式：
+The app includes two modes:
 
-1. **手写数字 + LeNet**
-   - 学生在网页画布上写一个数字。
-   - LeNet 风格的卷积神经网络会预测该数字。
-   - 学生可以选择不同网络层和通道，观察模型内部激活。
+1. **Handwritten digit + LeNet**
+   - Draw a digit in the browser.
+   - A LeNet-style convolutional neural network predicts the digit.
+   - Choose a network layer and channel to inspect internal activations.
 
-2. **自然图像 + AlexNet**
-   - 学生可以使用默认示例图，也可以上传自己的图片。
-   - 预训练 AlexNet 会进行 ImageNet 分类。
-   - 学生可以选择不同网络层和通道，比较早期、中期和后期表征的变化。
+2. **Natural image + AlexNet**
+   - Use the default image or upload your own image.
+   - A pretrained AlexNet runs ImageNet classification.
+   - Choose a network layer and channel to compare early, middle, and late representations.
 
-## 适合课堂讨论的问题
+## Classroom Discussion Prompts
 
-- 为什么早期卷积层更像原始图片中的边缘、笔画或纹理？
-- 为什么更深层的表征越来越难直接看懂？
-- 一个卷积通道可以理解为在寻找什么类型的视觉特征？
-- 全连接层为什么更适合看成向量，而不是二维图像？
-- 同一张图片如何逐步变成一个分类判断？
+- Why do early convolution layers resemble edges, strokes, and textures from the input image?
+- Why do deeper representations become harder to interpret directly?
+- What might a single convolutional channel be detecting?
+- Why are fully connected layers better understood as vectors than as two-dimensional images?
+- How does the same image gradually become a classification decision?
 
-## 本地运行
+## Run Locally
 
-推荐使用 Python 3.10 或更新版本。Streamlit Community Cloud 会使用它当前支持的 Python 版本，因此 `requirements.txt` 中的 PyTorch 版本使用了兼容范围，而不是固定旧版本。
+Python 3.10 or newer is recommended. Streamlit Community Cloud uses its currently supported Python versions, so the PyTorch dependency uses a compatible version range instead of an old fixed version.
 
 ```bash
 cd CNNs_representation_viz
@@ -35,15 +35,15 @@ python -m pip install -r requirements.txt
 python -m streamlit run app.py
 ```
 
-然后打开终端中显示的本地地址，通常是：
+Then open the local URL shown by Streamlit, usually:
 
 ```text
 http://localhost:8501
 ```
 
-## 发布到 GitHub
+## Publish To GitHub
 
-如果这是一个新项目，可以在本目录中运行：
+If this is a new project, run these commands from the project directory:
 
 ```bash
 git init
@@ -52,42 +52,42 @@ git commit -m "Prepare CNN representation lab for deployment"
 git branch -M main
 ```
 
-然后在 GitHub 网页端新建仓库 `CNNs_representation_viz`。创建后，根据 GitHub 给出的命令添加远端并推送：
+Create a GitHub repository named `CNNs_representation_viz`, then add the remote and push:
 
 ```bash
-git remote add origin https://github.com/<你的用户名>/CNNs_representation_viz.git
+git remote add origin https://github.com/<your-username>/CNNs_representation_viz.git
 git push -u origin main
 ```
 
-## 发布为在线网站
+## Deploy As A Website
 
-推荐使用 Streamlit Community Cloud，因为本项目依赖 Python、PyTorch 和 torchvision，不能直接部署到 GitHub Pages 这种静态网页服务。
+Streamlit Community Cloud is recommended because this project depends on Python, PyTorch, and torchvision. It cannot be deployed directly with static hosting such as GitHub Pages.
 
-部署步骤：
+Deployment steps:
 
-1. 打开 [Streamlit Community Cloud](https://share.streamlit.io/)。
-2. 使用 GitHub 登录。
-3. 点击 **Create app** 或 **New app**。
-4. 选择刚刚推送的 GitHub 仓库。
-5. Branch 选择 `main`。
-6. Main file path 填写 `app.py`。
-7. 点击 Deploy。
+1. Open [Streamlit Community Cloud](https://share.streamlit.io/).
+2. Sign in with GitHub.
+3. Click **Create app** or **New app**.
+4. Select the GitHub repository.
+5. Set Branch to `main`.
+6. Set Main file path to `app.py`.
+7. Click Deploy.
 
-如果 Cloud 的安装日志显示某个依赖不支持当前 Python 版本，可以在部署页面的 **Advanced settings** 中把 Python version 改成 `3.12`，再重新部署。
+If the Cloud install log says a dependency does not support the current Python version, open **Advanced settings**, set Python version to `3.12`, save, and redeploy.
 
-部署完成后，Streamlit 会生成一个公开网址。把这个网址发给学生即可。
+After deployment, Streamlit will create a public URL. Share that URL with students.
 
-## 模型权重说明
+## Model Weights
 
-LeNet 使用仓库中自带的权重文件：
+LeNet uses the bundled weight file:
 
 ```text
 assets/lenet_digits_28.pt
 ```
 
-AlexNet 使用 torchvision 官方 ImageNet 预训练权重。在线网站首次运行 AlexNet 模式时会自动下载权重，第一次打开可能稍慢。
+AlexNet uses the official ImageNet pretrained weights from torchvision. The first online run may take a little longer because the weights need to download.
 
-如果本地运行时 AlexNet 权重下载中断，可以清理 PyTorch 缓存后重试：
+If the AlexNet download is interrupted during local development, clear the PyTorch cache and retry:
 
 ```bash
 rm -rf ~/.cache/torch/checkpoints/*

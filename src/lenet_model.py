@@ -29,11 +29,11 @@ class LeNet5(nn.Module):
 
 
 LENET_LAYER_MAP = {
-    "conv1：早期边缘/笔画滤波器": "conv1",
-    "pool1：压缩后的早期表征": "pool1",
-    "conv2：数字笔画组合": "conv2",
-    "pool2：更紧凑的空间表征": "pool2",
-    "fc1：抽象数字向量": "fc1",
-    "fc2：更接近类别的向量": "fc2",
-    "输出层：10 个数字类别证据": "fc3",
+    "conv1: early edge and stroke filters": "conv1",
+    "pool1: downsampled early representation": "pool1",
+    "conv2: digit stroke combinations": "conv2",
+    "pool2: compact spatial representation": "pool2",
+    "fc1: abstract digit vector": "fc1",
+    "fc2: class-oriented vector": "fc2",
+    "output layer: 10 digit class evidence values": "fc3",
 }

@@ -4,18 +4,18 @@ import torch
 import torch.nn as nn
 
 ALEXNET_LAYER_MAP = {
-    "features.0 卷积1：大范围边缘和颜色滤波器": "features.0",
-    "features.1 ReLU1：保留正向激活": "features.1",
-    "features.2 最大池化1：缩小空间尺寸": "features.2",
-    "features.3 卷积2：纹理和颜色块": "features.3",
-    "features.5 最大池化2：进一步压缩": "features.5",
-    "features.6 卷积3：物体局部结构": "features.6",
-    "features.8 卷积4：更复杂的局部组合": "features.8",
-    "features.10 卷积5：较紧凑的语义图": "features.10",
-    "features.12 最大池化5：最后的空间压缩": "features.12",
-    "classifier.1 全连接6：抽象图像向量": "classifier.1",
-    "classifier.4 全连接7：更接近类别的向量": "classifier.4",
-    "classifier.6 输出层：ImageNet 类别证据": "classifier.6",
+    "features.0 Conv1: broad edge and color filters": "features.0",
+    "features.1 ReLU1: positive activations": "features.1",
+    "features.2 MaxPool1: smaller spatial map": "features.2",
+    "features.3 Conv2: textures and color blobs": "features.3",
+    "features.5 MaxPool2: further compression": "features.5",
+    "features.6 Conv3: local object parts": "features.6",
+    "features.8 Conv4: richer part combinations": "features.8",
+    "features.10 Conv5: compact semantic maps": "features.10",
+    "features.12 MaxPool5: final spatial compression": "features.12",
+    "classifier.1 FC6: abstract image vector": "classifier.1",
+    "classifier.4 FC7: class-oriented vector": "classifier.4",
+    "classifier.6 Output: ImageNet class evidence": "classifier.6",
 }
 
 
