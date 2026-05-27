@@ -1,4 +1,4 @@
-# 早期 CNN 表征探索实验
+# CNNs Representation Viz
 
 这是一个用于期末题自主探索的 Streamlit 在线应用。学生无需安装 Python 或配置深度学习环境，只需要打开网页，就可以观察 LeNet 和 AlexNet 在不同层级中的神经网络表征。
 
@@ -27,7 +27,7 @@
 推荐使用 Python 3.10。
 
 ```bash
-cd early-cnn-representation-lab
+cd CNNs_representation_viz
 python3.10 -m venv .venv
 source .venv/bin/activate
 python -m pip install --upgrade pip setuptools wheel
@@ -52,10 +52,10 @@ git commit -m "Prepare CNN representation lab for deployment"
 git branch -M main
 ```
 
-然后在 GitHub 网页端新建一个仓库，例如 `early-cnn-representation-lab`。创建后，根据 GitHub 给出的命令添加远端并推送：
+然后在 GitHub 网页端新建仓库 `CNNs_representation_viz`。创建后，根据 GitHub 给出的命令添加远端并推送：
 
 ```bash
-git remote add origin https://github.com/<你的用户名>/early-cnn-representation-lab.git
+git remote add origin https://github.com/<你的用户名>/CNNs_representation_viz.git
 git push -u origin main
 ```
 

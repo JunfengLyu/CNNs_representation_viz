@@ -29,8 +29,8 @@ ROOT = Path(__file__).resolve().parent
 LENET_WEIGHTS = ROOT / "assets" / "lenet_digits_28.pt"
 DEMO_IMAGE = ROOT / "ImageNet_demo.JPEG"
 
-st.set_page_config(page_title="早期 CNN 表征探索实验", layout="wide")
-st.title("早期 CNN 表征探索实验")
+st.set_page_config(page_title="CNNs Representation Viz", layout="wide")
+st.title("CNNs Representation Viz")
 st.caption("通过 LeNet 手写数字和 AlexNet 自然图像，观察神经网络在不同层级中形成的表征。")
 
 
