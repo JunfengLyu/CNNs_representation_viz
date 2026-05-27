@@ -28,10 +28,11 @@ except Exception:
 ROOT = Path(__file__).resolve().parent
 LENET_WEIGHTS = ROOT / "assets" / "lenet_digits_28.pt"
 DEMO_IMAGE = ROOT / "ImageNet_demo.JPEG"
+IMAGENET_SAMPLE_REPO = "https://github.com/EliSchwartz/imagenet-sample-images"
 
 st.set_page_config(page_title="CNNs Representation Viz", layout="wide")
 st.title("CNNs Representation Viz")
-st.caption("Explore how LeNet and AlexNet form representations across different network layers.")
+st.caption("Use the controls below to run the interface.")
 
 
 def get_device():
@@ -92,7 +93,7 @@ def topk_text(logits: torch.Tensor, k: int = 5, labels=None):
 
 def lenet_mode(device: str):
     st.header("Mode 1: Handwritten digit + LeNet")
-    st.write("Draw a white digit on the black canvas, then choose a layer and channel to inspect the model representation.")
+    st.info("How to use: draw a white digit, choose a LeNet layer, then move the channel slider.")
     if st_canvas is None:
         st.error("streamlit-drawable-canvas is missing. Run: pip install streamlit-drawable-canvas")
         return
@@ -146,7 +147,8 @@ def lenet_mode(device: str):
 
 def alexnet_mode(device: str):
     st.header("Mode 2: Natural image + AlexNet")
-    st.write("Use the default image or upload your own image to inspect AlexNet representations.")
+    st.info("How to use: keep the demo image or upload an image, choose an AlexNet layer, then move the channel slider.")
+    st.markdown(f"Sample ImageNet images: [{IMAGENET_SAMPLE_REPO}]({IMAGENET_SAMPLE_REPO})")
     uploaded = st.file_uploader("Upload an image (optional)", type=["png", "jpg", "jpeg", "webp"])
 
     if uploaded is None:
@@ -200,8 +202,11 @@ def alexnet_mode(device: str):
 def main():
     device = get_device()
     st.sidebar.success(f"Device: {device}")
-    st.sidebar.markdown("### Exploration prompt")
-    st.sidebar.write("Early convolution layers often preserve edges, strokes, and textures. Deeper layers become more abstract and class-oriented.")
+    st.sidebar.markdown("### How to use")
+    st.sidebar.write("1. Choose a mode.")
+    st.sidebar.write("2. Provide an input image.")
+    st.sidebar.write("3. Select a layer.")
+    st.sidebar.write("4. Adjust the channel or unit index.")
     mode = st.sidebar.radio(
         "Choose a mode",
         ["Handwritten digit + LeNet", "Natural image + AlexNet"],

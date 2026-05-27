@@ -29,11 +29,11 @@ class LeNet5(nn.Module):
 
 
 LENET_LAYER_MAP = {
-    "conv1: early edge and stroke filters": "conv1",
-    "pool1: downsampled early representation": "pool1",
-    "conv2: digit stroke combinations": "conv2",
-    "pool2: compact spatial representation": "pool2",
-    "fc1: abstract digit vector": "fc1",
-    "fc2: class-oriented vector": "fc2",
-    "output layer: 10 digit class evidence values": "fc3",
+    "conv1": "conv1",
+    "pool1": "pool1",
+    "conv2": "conv2",
+    "pool2": "pool2",
+    "fc1": "fc1",
+    "fc2": "fc2",
+    "output layer": "fc3",
 }

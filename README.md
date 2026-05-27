@@ -1,26 +1,19 @@
 # CNNs Representation Viz
 
-This Streamlit app is designed for a final-term exploratory assignment. Students can open a website and inspect neural network representations without installing Python or configuring a deep learning environment.
+This Streamlit app is designed for a final-term assignment. Students can open a website and use the interface without installing Python or configuring a deep learning environment.
 
 The app includes two modes:
 
 1. **Handwritten digit + LeNet**
    - Draw a digit in the browser.
    - A LeNet-style convolutional neural network predicts the digit.
-   - Choose a network layer and channel to inspect internal activations.
+   - Choose a network layer and channel to view internal activations.
 
 2. **Natural image + AlexNet**
    - Use the default image or upload your own image.
    - A pretrained AlexNet runs ImageNet classification.
-   - Choose a network layer and channel to compare early, middle, and late representations.
-
-## Classroom Discussion Prompts
-
-- Why do early convolution layers resemble edges, strokes, and textures from the input image?
-- Why do deeper representations become harder to interpret directly?
-- What might a single convolutional channel be detecting?
-- Why are fully connected layers better understood as vectors than as two-dimensional images?
-- How does the same image gradually become a classification decision?
+   - Choose a network layer and channel to view activations.
+   - Optional sample images are available from [EliSchwartz/imagenet-sample-images](https://github.com/EliSchwartz/imagenet-sample-images).
 
 ## Run Locally
 
