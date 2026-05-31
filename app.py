@@ -175,8 +175,7 @@ def alexnet_mode(device: str):
 
     a, b = st.columns([1, 1])
     with a:
-        st.image(original, caption=source_caption, use_container_width=True)
-        st.image(model_input, caption="AlexNet model input (224x224 center crop)", use_container_width=True)
+        st.image(model_input, caption=f"{source_caption}: AlexNet input (224x224 center crop)", use_container_width=True)
     with b:
         layer_label = st.selectbox("Choose an AlexNet layer", list(ALEXNET_LAYER_MAP.keys()), index=0)
         module_name = ALEXNET_LAYER_MAP[layer_label]
