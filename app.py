@@ -170,12 +170,13 @@ def alexnet_mode(device: str):
         st.code("rm -rf ~/.cache/torch/checkpoints/*\npython -m streamlit run app.py", language="bash")
         return
 
-    original, x = preprocess_image_for_alexnet(img, weights)
+    original, model_input, x = preprocess_image_for_alexnet(img, weights)
     x = x.to(device)
 
     a, b = st.columns([1, 1])
     with a:
         st.image(original, caption=source_caption, use_container_width=True)
+        st.image(model_input, caption="AlexNet model input (224x224 center crop)", use_container_width=True)
     with b:
         layer_label = st.selectbox("Choose an AlexNet layer", list(ALEXNET_LAYER_MAP.keys()), index=0)
         module_name = ALEXNET_LAYER_MAP[layer_label]
@@ -193,7 +194,7 @@ def alexnet_mode(device: str):
         plot_activation(act2d, f"{layer_label}\n{desc}")
     with v2:
         if act2d.ndim == 2 and min(act2d.shape) > 1:
-            plot_overlay(original, act2d, "Activation overlay on original image")
+            plot_overlay(model_input, act2d, "Activation overlay on AlexNet input")
         else:
             st.info("Fully connected layers are vectors. The heatmap shows the full vector rather than an image-like spatial map.")
     st.caption(f"Activation tensor shape: {tuple(act.shape)}")

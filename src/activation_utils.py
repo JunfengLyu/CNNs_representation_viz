@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Dict, Tuple
+from typing import Tuple
 import numpy as np
 import torch
 import torch.nn as nn
@@ -67,12 +67,32 @@ def preprocess_canvas_rgba(rgba: np.ndarray) -> Tuple[Image.Image, torch.Tensor]
     return canvas28, tensor
 
 
-def preprocess_image_for_alexnet(img: Image.Image, weights) -> Tuple[Image.Image, torch.Tensor]:
-    """Use torchvision's official AlexNet preprocessing when weights exist."""
+def preprocess_image_for_alexnet(img: Image.Image, weights) -> Tuple[Image.Image, Image.Image, torch.Tensor]:
+    """Create the exact AlexNet input image and its normalized tensor."""
     img = ImageOps.exif_transpose(img).convert("RGB")
-    transform = weights.transforms()
-    tensor = transform(img).unsqueeze(0)
-    return img, tensor
+    resize_size = 256
+    crop_size = 224
+    if weights is not None:
+        transform = weights.transforms()
+        resize_size = int(transform.resize_size[0] if isinstance(transform.resize_size, list) else transform.resize_size)
+        crop_size = int(transform.crop_size[0] if isinstance(transform.crop_size, list) else transform.crop_size)
+
+    w, h = img.size
+    if w < h:
+        resized = img.resize((resize_size, round(h * resize_size / w)), Image.Resampling.BILINEAR)
+    else:
+        resized = img.resize((round(w * resize_size / h), resize_size), Image.Resampling.BILINEAR)
+
+    left = (resized.width - crop_size) // 2
+    top = (resized.height - crop_size) // 2
+    model_img = resized.crop((left, top, left + crop_size, top + crop_size))
+
+    arr = np.asarray(model_img, dtype=np.float32) / 255.0
+    tensor = torch.from_numpy(arr).permute(2, 0, 1)
+    mean = torch.tensor([0.485, 0.456, 0.406])[:, None, None]
+    std = torch.tensor([0.229, 0.224, 0.225])[:, None, None]
+    tensor = ((tensor - mean) / std).unsqueeze(0)
+    return img, model_img, tensor
 
 
 def activation_channel_image(act: torch.Tensor, channel: int) -> Tuple[np.ndarray, str]:
