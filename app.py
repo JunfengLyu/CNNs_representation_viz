@@ -30,6 +30,27 @@ LENET_WEIGHTS = ROOT / "assets" / "lenet_digits_28.pt"
 DEMO_IMAGE = ROOT / "ImageNet_demo.JPEG"
 
 st.set_page_config(page_title="CNNs Representation Viz", layout="wide")
+st.markdown(
+    """
+    <style>
+    #MainMenu,
+    footer,
+    header,
+    .stDeployButton,
+    [data-testid="stToolbar"],
+    [data-testid="stDecoration"],
+    [data-testid="stStatusWidget"],
+    [data-testid="stAppDeployButton"],
+    [data-testid="stBottom"],
+    a[href*="streamlit.io"] {
+        display: none !important;
+        visibility: hidden !important;
+        height: 0 !important;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
 st.title("CNNs Representation Viz")
 st.caption("Use the controls below to run the interface.")
 
