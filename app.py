@@ -28,7 +28,6 @@ except Exception:
 ROOT = Path(__file__).resolve().parent
 LENET_WEIGHTS = ROOT / "assets" / "lenet_digits_28.pt"
 DEMO_IMAGE = ROOT / "ImageNet_demo.JPEG"
-IMAGENET_SAMPLE_REPO = "https://github.com/EliSchwartz/imagenet-sample-images"
 
 st.set_page_config(page_title="CNNs Representation Viz", layout="wide")
 st.title("CNNs Representation Viz")
@@ -148,7 +147,6 @@ def lenet_mode(device: str):
 def alexnet_mode(device: str):
     st.header("Mode 2: Natural image + AlexNet")
     st.info("How to use: keep the demo image or upload an image, choose an AlexNet layer, then move the channel slider.")
-    st.markdown(f"Sample ImageNet images: [{IMAGENET_SAMPLE_REPO}]({IMAGENET_SAMPLE_REPO})")
     uploaded = st.file_uploader("Upload an image (optional)", type=["png", "jpg", "jpeg", "webp"])
 
     if uploaded is None:

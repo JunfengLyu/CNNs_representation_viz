@@ -13,7 +13,6 @@ The app includes two modes:
    - Use the default image or upload your own image.
    - A pretrained AlexNet runs ImageNet classification.
    - Choose a network layer and channel to view activations.
-   - Optional sample images are available from [EliSchwartz/imagenet-sample-images](https://github.com/EliSchwartz/imagenet-sample-images).
 
 ## Run Locally
 
@@ -34,34 +33,16 @@ Then open the local URL shown by Streamlit, usually:
 http://localhost:8501
 ```
 
-## Publish To GitHub
-
-If this is a new project, run these commands from the project directory:
-
-```bash
-git init
-git add .
-git commit -m "Prepare CNN representation lab for deployment"
-git branch -M main
-```
-
-Create a GitHub repository named `CNNs_representation_viz`, then add the remote and push:
-
-```bash
-git remote add origin https://github.com/<your-username>/CNNs_representation_viz.git
-git push -u origin main
-```
-
 ## Deploy As A Website
 
-Streamlit Community Cloud is recommended because this project depends on Python, PyTorch, and torchvision. It cannot be deployed directly with static hosting such as GitHub Pages.
+Streamlit Community Cloud is recommended because this project depends on Python, PyTorch, and torchvision.
 
 Deployment steps:
 
 1. Open [Streamlit Community Cloud](https://share.streamlit.io/).
-2. Sign in with GitHub.
+2. Sign in.
 3. Click **Create app** or **New app**.
-4. Select the GitHub repository.
+4. Select the project repository.
 5. Set Branch to `main`.
 6. Set Main file path to `app.py`.
 7. Click Deploy.
